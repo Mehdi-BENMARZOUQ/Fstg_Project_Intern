@@ -1,4 +1,4 @@
-<img width="100%" alt="image" src="https://user-images.githubusercontent.com/129714988/230786429-ae7d00b6-3375-452d-bc00-adbf780ad5f5.png">
+
 
 # Laravel React Vite Stisla
 
@@ -91,8 +91,4 @@ cd ../backend
 php artisan serve
 ```
 
-10. Visit [Localhost](http://localhost:5173/products) in your web browser to access the web application.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/fhmiibrhimdev/laravel-react-vite-stisla/blob/main/LICENSE) file for more details.
