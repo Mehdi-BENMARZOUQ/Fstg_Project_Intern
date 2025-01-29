@@ -9,9 +9,11 @@ import InputValidation from "../Layout/Components/InputValidation";
 export default function Register() {
     const navigate = useNavigate();
     const MySwal = withReactContent(Swal);
+    const [roles, setRoles] = useState([]);
 
     useEffect(() => {
-        document.title = "Register";
+        document.title = "Ajouter Utilisateur";
+        fetchRoles();
     }, []);
 
     const [formData, setFormData] = useState({
@@ -37,6 +39,15 @@ export default function Register() {
         password_confirmation: "",
         role: "",
     });
+
+    const fetchRoles = async () => {
+        try {
+            const response = await axios.get(`${appConfig.baseurlAPI}/roles`);
+            setRoles(response.data);
+        } catch (error) {
+            console.error("Error fetching roles:", error);
+        }
+    };
 
     const validateForm = () => {
         let errors = {};
@@ -129,7 +140,7 @@ export default function Register() {
             <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4 tw-mt-10">
                 <div className="card">
                     <div className="card-header">
-                        <h4>Register</h4>
+                        <h4>Ajouter Utilisateur</h4>
                     </div>
                     <div className="card-body">
                         <form onSubmit={registerHandler}>
@@ -180,8 +191,11 @@ export default function Register() {
                                     <option selected>
                                         -- Selected Option --
                                     </option>
-                                    <option value="admin">Admin</option>
-                                    <option value="user">User</option>
+                                    {roles.map((role) => (
+                                        <option key={role.id} value={role.name}>
+                                            {role.name}
+                                        </option>
+                                    ))}
                                 </select>
                                 {formErrors.role && (
                                     <div className="invalid-feedback">
@@ -199,10 +213,7 @@ export default function Register() {
                     </div>
                 </div>
                 <div className="mt-5 text-muted text-center">
-                    Have an account? <Link to="/">Login here</Link>
-                </div>
-                <div className="simple-footer">
-                    Copyright &copy; Stisla 2023
+                    Espace Services Scolarité - FSTG © 2025
                 </div>
             </div>
         </div>

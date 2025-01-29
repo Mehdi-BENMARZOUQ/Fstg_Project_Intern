@@ -40,3 +40,8 @@
 .read-the-docs {
     color: #888;
 }
+
+.mt-5,
+.my-5 {
+    margin-top: 10rem !important;
+}

@@ -36,7 +36,7 @@ This project is a web application built with Laravel, ReactJS with Vite, and Sti
 1. Clone this repository to your local machine:
 
 ```
-git clone https://github.com/fhmiibrhimdev/laravel-react-vite-stisla.git
+git clone https://github.com/Mehdi-BENMARZOUQ/Fstg_Project_Intern.git
 ```
 
 2. Install the dependencies for the Laravel project:

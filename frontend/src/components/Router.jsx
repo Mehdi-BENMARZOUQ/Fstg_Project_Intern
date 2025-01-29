@@ -13,6 +13,11 @@ import Error404 from "../pages/Error/404";
 import Gallery from "../pages/Gallery/Gallery";
 import Profile from "../pages/Profile/Profile";
 import MultipleInsert from "../pages/MultipleInsert/MultipleInsert";
+import ConventionStageForm from "../pages/Etudiant/ConventionStageForm";
+import DetailleConvention from "../pages/Etudiant/DetailleConvention";
+import ConfirmationDesConvention from "../pages/Communication/ConfirmationDesConvention.jsx";
+import ConfirmationDesConventionSG from "../pages/SGeneral/ConfirmationDesConventionSG.jsx";
+
 
 export default function Router() {
     return (
@@ -29,7 +34,7 @@ export default function Router() {
             />
             <Route
                 exact
-                path="/register"
+                path="/ajouter_utilisateur"
                 element={
                     <AuthLayout>
                         <Register />
@@ -99,6 +104,46 @@ export default function Router() {
                     </MainLayout>
                 }
             />
+
+            <Route
+                exact
+                path="/convention_stage"
+                element={
+                    <MainLayout>
+                        <ConventionStageForm/>
+                    </MainLayout>
+                }
+            />
+             <Route
+                exact
+                path="/telecharger_convention"
+                element={
+                    <MainLayout>
+                        <DetailleConvention/>
+                    </MainLayout>
+                }
+            />
+             <Route
+                exact
+                path="/confirmer_convention_communication"
+                element={
+                    <MainLayout>
+                        <ConfirmationDesConvention/>
+                    </MainLayout>
+                }
+            />
+             <Route
+                exact
+                path="/confirmer_convention_sg"
+                element={
+                    <MainLayout>
+                        <ConfirmationDesConventionSG/>
+                    </MainLayout>
+                }
+            />
+
+
+
             <Route path="*" element={<Error404 />} />
         </Routes>
     );

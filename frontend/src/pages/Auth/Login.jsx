@@ -9,7 +9,6 @@ import InputValidation from "../Layout/Components/InputValidation";
 import fstg_logo from "../../assets/Fstg_Logo.png";
 
 export default function Login() {
-    const navigate = useNavigate();
     const MySwal = withReactContent(Swal);
 
     useEffect(() => {
@@ -39,13 +38,14 @@ export default function Login() {
         let errors = {};
         let formIsValid = true;
 
-        // Validate input description
         if (!formData.email) {
             formIsValid = false;
             errors.email = "Email is required";
+        }else if (!formData.email.endsWith("@uca.ac.ma")) {
+            formIsValid = false;
+            errors.email = "Email must end with @uca.ac.ma";
         }
 
-        // Validate input description
         if (!formData.password) {
             formIsValid = false;
             errors.password = "Password is required";
@@ -62,7 +62,6 @@ export default function Login() {
 
     const loginHandler = (e) => {
         e.preventDefault();
-
         if (validateForm()) {
             axios
                 .post(`${appConfig.baseurlAPI}/login`, formData, {
@@ -73,11 +72,12 @@ export default function Login() {
                 .then((response) => {
                     if (response.status === 200) {
                         setTokenWithExpiration("token", response.data.token);
+                        localStorage.setItem('user_id', response.data.user.id);
                         MySwal.fire({
                             title: "Success!",
                             text: "Login successfully",
                             icon: "success",
-                            timer: 1500,
+                           
                         }).then(() => {
                             window.location.href = "/dashboard";
                         });
@@ -97,19 +97,15 @@ export default function Login() {
 /**/
     return (
 
-
+        
         <div className="row">
-
-
-
             <div
-                className="col-12  col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4 tw-mt-10">
+                className="col-12  col-sm-8 offset-sm-2 col-md-12 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4 tw-mt-10">
 
                 <div className="card">
                     <div className="card-header">
                         <div>
                             <img src={fstg_logo} alt=""/>
-
                         </div>
                     </div>
                     <div className="card-body">
@@ -151,7 +147,7 @@ export default function Login() {
                 </div>
 
                 <div className="mt-5 text-muted text-center">
-                    Espace Services Scolarité - FSTG © 2021
+                    Espace Services Scolarité - FSTG © 2025
                 </div>
 
             </div>

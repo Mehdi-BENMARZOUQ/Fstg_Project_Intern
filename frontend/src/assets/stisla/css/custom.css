@@ -6,3 +6,30 @@
  */
 
 /*# sourceMappingURL=custom.css.map */
+.btn-fst,
+.btn-modal{
+    background: #d9713f !important; ;
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.2s;
+}
+
+.link-success {
+    color: green !important;
+}
+
+
+.convention-done{
+    text-align: center;
+    font-size: 35px;
+
+}

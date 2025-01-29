@@ -1,24 +1,24 @@
 import axios from "axios";
 import NavLink from "./NavLink";
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef, Children } from "react";
+import {Link, useNavigate} from "react-router-dom";
 import fstg_logo from "../assets/Fstg_Logo.png";
-
+import '../assets/stisla/css/custom.css';
 import { getTokenWithExpiration } from "../pages/Auth/Session";
 import appConfig from "../config/appConfig";
 
 export default function Navigation() {
     const [user, setUser] = useState({});
-
     const navigate = useNavigate();
     const token = getTokenWithExpiration("token");
-
+    const [conventionCreated, setConventionCreated] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     const handleDropdownClick = () => {
         setDropdownOpen(!dropdownOpen);
     };
+
 
     const handleClickOutsideDropdown = (event) => {
         if (
@@ -49,8 +49,11 @@ export default function Navigation() {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         await axios.get(`${appConfig.baseurlAPI}/user`).then((response) => {
             setUser(response.data);
+            console.log(response.data);
         });
     };
+
+
 
     const logoutHandler = async () => {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -59,6 +62,51 @@ export default function Navigation() {
             navigate("/");
         });
     };
+
+
+    useEffect(() => {
+        const checkConvention = async () => {
+            const token = getTokenWithExpiration("token");
+            if (!token) {
+                console.log('No token found. Please login again.');
+                navigate('/');
+                return;
+            }
+
+            try {
+
+                const response = await axios.get(`${appConfig.baseurlAPI}/conventionstage/user/${user.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.data.exists) {
+                    setConventionCreated(true);
+                } else {
+                    setConventionCreated(false);
+                }
+            } catch (error) {
+                if (error.response) {
+                    console.error("Error Response Data:", error.response.data);
+                    console.error("Error Status:", error.response.status);
+                    console.error("Error Headers:", error.response.headers);
+                } else if (error.request) {
+                    console.error("No Response Received:", error.request);
+                } else {
+                    console.error("Request Setup Error:", error.message);
+                }
+            }
+        };
+
+        if (user.id) {
+            checkConvention();
+        }
+    }, [user.id, navigate]);
+
+
 
     return (
         <>
@@ -88,6 +136,7 @@ export default function Navigation() {
                             </div>
                         </a>
                         <div className="dropdown-menu dropdown-menu-right">
+
                             <div className="dropdown-title">
                                 ROLE: {user.role}
                             </div>
@@ -124,6 +173,7 @@ export default function Navigation() {
                                 <span>Dashboard</span>
                             </NavLink>
                         </li>
+
                         <li
                             className={`nav-item dropdown ${
                                 location.pathname === "/general-feature" ||
@@ -143,81 +193,53 @@ export default function Navigation() {
                                     dropdownOpen ? "show" : ""
                                 }`}
                             >
-                                <i className="fas fa-fire"></i>
-                                <span>Module 1</span>
+                                <i className="fas fa-briefcase"></i>
+                                <span>Stage</span>
                             </a>
                             <ul
                                 className={`dropdown-menu ${
                                     dropdownOpen ? "show" : ""
                                 }`}
                             >
-                                <li
-                                    className={`nav-item ${
-                                        location.pathname === "/general-feature"
-                                            ? "active"
-                                            : ""
-                                    }`}
-                                >
-                                    <NavLink href="/general-feature">
-                                        General Feature
-                                    </NavLink>
-                                </li>
-                                <li
-                                    className={`nav-item ${
-                                        location.pathname ===
-                                        "/advanced-feature"
-                                            ? "active"
-                                            : ""
-                                    }`}
-                                >
-                                    <NavLink href="/advanced-feature">
-                                        Advanced Feature
-                                    </NavLink>
-                                </li>
-                                {user.role === "admin" && (
+                                {user.role === "Student" && (
                                     <>
-                                        <li
-                                            className={`nav-item ${
-                                                location.pathname ===
-                                                "/products"
-                                                    ? "active"
-                                                    : ""
-                                            }`}
-                                        >
-                                            <NavLink href="/products">
-                                                Products
+                                        <li className={`nav-item ${location.pathname === "/convention_stage" ? "active" : ""}`}>
+                                            <NavLink href="/convention_stage" customStyle={{ color: conventionCreated ? 'green' : '', background: conventionCreated ? 'lightgreen' : '' }}>
+                                                CONVENTION DE STAGE
                                             </NavLink>
                                         </li>
-                                        <li
-                                            className={`nav-item ${
-                                                location.pathname === "/gallery"
-                                                    ? "active"
-                                                    : ""
-                                            }`}
-                                        >
-                                            <NavLink href="/gallery">
-                                                Gallery
-                                            </NavLink>
-                                        </li>
-                                        <li
-                                            className={`nav-item ${
-                                                location.pathname ===
-                                                "/multiple-insert"
-                                                    ? "active"
-                                                    : ""
-                                            }`}
-                                        >
-                                            <NavLink href="/multiple-insert">
-                                                Multiple Insert
+                                        <li className={`nav-item ${location.pathname === "/telecharger_convention" ? "active" : ""}`}>
+                                            <NavLink href="/telecharger_convention">
+                                                TELECHARGER VOTRE CONVENTION
                                             </NavLink>
                                         </li>
                                     </>
                                 )}
+                                {user.role === "Communication" && (
+                                    <li className={`nav-item ${location.pathname === "/confirmer_convention_communication" ? "active" : ""}`}>
+                                        <NavLink href="/confirmer_convention_communication">
+                                            CONFIRMER LES CONVENTION
+                                        </NavLink>
+                                    </li>
+                                )}
+                                {user.role === "SGeneral" && (
+                                    <li className={`nav-item ${location.pathname === "/confirmer_convention_sg" ? "active" : ""}`}>
+                                        <NavLink href="/confirmer_convention_sg">
+                                            CONFIRMER LES CONVENTION
+                                        </NavLink>
+                                    </li>
+                                )}
+
                             </ul>
                         </li>
+
+
+                       
                     </ul>
                 </div>
             </nav>
+
+
         </>
     );
 }

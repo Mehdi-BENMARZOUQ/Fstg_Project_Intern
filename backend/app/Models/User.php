@@ -56,7 +56,7 @@ class User extends Authenticatable implements JWTSubject, LaratrustUser
     {
         return $this->getKey();
     }
-        
+
     /**
      * getJWTCustomClaims
      *
@@ -66,4 +66,6 @@ class User extends Authenticatable implements JWTSubject, LaratrustUser
     {
         return [];
     }
+
+
 }

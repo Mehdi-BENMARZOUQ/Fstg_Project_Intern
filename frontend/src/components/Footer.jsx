@@ -4,7 +4,7 @@ export default function Footer() {
     return (
         <footer className="main-footer">
             <div className="footer-left">
-                <span> Mehdi Benmarzouq && Omar Bouddaden</span>
+                <span> Faculté des Sciences et Techniques Marrakech</span>
             </div>
         </footer>
     );

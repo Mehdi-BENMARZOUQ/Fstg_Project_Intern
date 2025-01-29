@@ -13,7 +13,7 @@ class LoginController extends Controller
      * Handle the incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function __invoke(Request $request)
     {
@@ -51,9 +51,9 @@ class LoginController extends Controller
         //if auth success
         return response()->json([
             'success' => true,
-            'user'    => $user,   
-            'role'    => $role, 
-            'token'   => $token   
+            'user'    => $user,
+            'role'    => $role,
+            'token'   => $token
         ], 200);
     }
 }

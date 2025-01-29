@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PersonalController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\Etudiant\ConventionStageController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,14 +22,16 @@ use App\Http\Controllers\ProductController;
 Route::post('/register', App\Http\Controllers\Api\RegisterController::class)->name('register');
 Route::post('/login', App\Http\Controllers\Api\LoginController::class)->name('login');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    $user = $request->user(); $role = $user->hasRole('admin') ? 'admin' : 'user';
+    $user = $request->user();
+    $role = $user->roles->pluck('name')->first();
     $user->setAttribute('role', $role);
     return $user;
 });
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/user', function (Request $request) {
-        $user = $request->user(); $role = $user->hasRole('admin') ? 'admin' : 'user';
+        $user = $request->user();
+        $role = $user->roles->pluck('name')->first();
         $user->setAttribute('role', $role);
         return $user;
     });
@@ -44,3 +47,14 @@ Route::group(['middleware' => ['auth:api', 'role:admin']], function () {
 });
 
 Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('logout');
+Route::get('/roles', [RoleController::class, 'index']);
+
+//Convention Stage
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::post('/conventionstage', [ConventionStageController::class, 'store']);
+    Route::get('/conventions', [ConventionStageController::class, 'index']);
+    Route::delete('/conventions/{id}', [ConventionStageController::class, 'destroy']);
+    Route::put('/conventions/{id}', [ConventionStageController::class, 'update']);
+    Route::get('/conventionstage/user/{user_id}', [ConventionStageController::class, 'checkUserConvention']);
+
+});

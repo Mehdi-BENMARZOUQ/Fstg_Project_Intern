@@ -40,15 +40,4 @@ export function getTokenWithExpiration(key) {
     return decryptedToken;
 }
 
-export function getTokenExpirationTime(key) {
-    const item = localStorage.getItem(key);
-    if (!item) {
-        return null;
-    }
-    const [_, expirationTime] = item.split("|");
-    const now = new Date();
-    const remainingSeconds = Math.round(
-        (expirationTime - now.getTime()) / 1000
-    );
-    return remainingSeconds > 0 ? remainingSeconds : null;
-}
+
