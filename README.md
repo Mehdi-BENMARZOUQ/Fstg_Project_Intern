@@ -1,6 +1,6 @@
 
 
-# Laravel React Vite Stisla
+# Laravel React FSTG
 
 This project is a web application built with Laravel, ReactJS with Vite, and Stisla Admin Template. The web application is designed to provide a user-friendly interface for managing data with the CRUD, searching, pagination, showing, single page application, and validation features.
 
